@@ -16,6 +16,10 @@ input, textarea{
   border: none;
 }
 
+textarea {
+  resize: none;
+}
+
 .wrapper{
   margin: 0 auto;
   max-width: 960px;
@@ -53,9 +57,8 @@ input, textarea{
 }
 
 #text,
-#post-text {
+.post-text {
   padding: 10px;
-  resize: none;
 }
 
 .btns__add-btn, .btns__remove-text, .edit-btn, .remove-post-btn {
