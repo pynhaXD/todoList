@@ -39,7 +39,6 @@ addBtn.addEventListener('click', () => {
 
 })
 
-
 postList.addEventListener('click', (event) => {
   const target = event.target;
 
