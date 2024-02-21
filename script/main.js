@@ -30,9 +30,10 @@ addBtn.addEventListener('click', () => {
   </div>
   `
 
-  postList.insertAdjacentHTML('beforeend', post)
+  postList.insertAdjacentHTML('afterbegin', post)
   inputText.value = ''
   inputTitle.value = ''
+
 })
 
 function removePost() {
@@ -54,7 +55,7 @@ function changeBtnsText(post, textEdit, textCancle) {
   cancelBtn.textContent = textCancle
 }
 
-function openEditText() {
+function enableEdit() {
   const target = event.target
   const textFields = target.closest('.post-wrapper').children[0]
 
@@ -69,7 +70,7 @@ function openEditText() {
   return textFields.nextElementSibling
 }
 
-function saveNewText() {
+function disableEdit() {
   const target = event.target
   const textFields = target.closest('.post-wrapper').children[0]
 
@@ -90,23 +91,21 @@ function changeEditable() {
   const textFields = target.closest('.post-wrapper').children[0]
   const status = textFields.dataset.isOpen
   
-  const edit = openEditText()
-  const save = saveNewText()
+  const enable = enableEdit()
+  const disable = disableEdit()
 
-  const text = edit.previousElementSibling.querySelector('.post-text').value
-  const title = edit.previousElementSibling.querySelector('.post-title').value
+  const text = enable.previousElementSibling.querySelector('.post-text').value
+  const title = enable.previousElementSibling.querySelector('.post-title').value
 
-  const rmBtn = edit.querySelector('.remove-post-btn')
+  const rmBtn = enable.querySelector('.remove-post-btn')
 
   if(status === 'false') {
-    openEditText()
-    changeBtnsText(edit, 'Сохранить', 'Отмена')
-    rmBtn.onclick = function() { 
-      cancleChanges(edit, title, text) 
-    }
+    enableEdit()
+    changeBtnsText(enable, 'Сохранить', 'Отмена')
+    rmBtn.onclick = function() { cancleChanges(enable, title, text) }
   } else {
-    saveNewText()
-    changeBtnsText(save, 'Редактировать', 'Удалить')
+    disableEdit()
+    changeBtnsText(disable, 'Редактировать', 'Удалить')
     rmBtn.onclick = removePost
   }
 }

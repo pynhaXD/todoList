@@ -38,6 +38,24 @@ textarea {
   overflow-y: scroll;
 }
 
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background-color: #a1a1a1;
+  border-radius: 5px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
 .add-post-wrapper{
   display: flex;
   flex-direction: column;
@@ -89,6 +107,23 @@ textarea {
 
 .post-wrapper{
   margin-bottom: 40px;
+  padding: 20px;
+  border: 1px solid #2b2b2b;
+  background-color: #424242;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  animation: slideIn 0.9s ease forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .post {
