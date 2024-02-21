@@ -11,7 +11,6 @@ remBtn.addEventListener('click', () => {
   inputTitle.value = ''
 })
 
-
 addBtn.addEventListener('click', () => {
   if(!inputTitle.value || !inputText.value) {
     alert('Заполните все поля ввода')
@@ -26,19 +25,25 @@ addBtn.addEventListener('click', () => {
     </div>
     <div class="post-btns">
       <button class="edit-btn" onclick="changeEditable()">Редактировать</button>
-      <button class="remove-post-btn" onclick="cancleChanges()">Удалить</button>
+      <button class="remove-post-btn" onclick="removePost()">Удалить</button>
     </div>
   </div>
   `
 
-  postList.innerHTML += post
+  postList.insertAdjacentHTML('beforeend', post)
+  inputText.value = ''
+  inputTitle.value = ''
 })
 
 function removePost() {
-  const target = event.target
-  const post = target.closest('.post-wrapper')
-
+  const post = event.target.closest('.post-wrapper')
   post.remove();
+}
+
+function cancleChanges(post, textTitle, textMain) {
+  post.previousElementSibling.querySelector('.post-title').value = textTitle
+  post.previousElementSibling.querySelector('.post-text').value = textMain
+  console.log(post);
 }
 
 function changeBtnsText(post, textEdit, textCancle) {
@@ -51,49 +56,57 @@ function changeBtnsText(post, textEdit, textCancle) {
 
 function openEditText() {
   const target = event.target
-  const post = target.closest('.post-wrapper').children[0]
+  const textFields = target.closest('.post-wrapper').children[0]
 
-  const title = post.querySelector('.post-title')
-  const text = post.querySelector('.post-text')
+  const title = textFields.querySelector('.post-title')
+  const text = textFields.querySelector('.post-text')
 
-  post.dataset.isOpen = 'true'
+  textFields.dataset.isOpen = 'true'
 
   title.removeAttribute('disabled')
   text.removeAttribute('disabled')
 
-  return post.nextElementSibling
+  return textFields.nextElementSibling
 }
 
 function saveNewText() {
   const target = event.target
-  const post = target.closest('.post-wrapper').children[0]
+  const textFields = target.closest('.post-wrapper').children[0]
 
-  const title = post.querySelector('.post-title')
-  const text = post.querySelector('.post-text')
+  const title = textFields.querySelector('.post-title')
+  const text = textFields.querySelector('.post-text')
 
 
-  post.dataset.isOpen = 'false'
+  textFields.dataset.isOpen = 'false'
 
   title.setAttribute('disabled', true)
   text.setAttribute('disabled', true)
 
-  return post.nextElementSibling
+  return textFields.nextElementSibling
 }
 
 function changeEditable() {
   const target = event.target
-  const post = target.closest('.post-wrapper').children[0]
-  const status = post.dataset.isOpen
-
+  const textFields = target.closest('.post-wrapper').children[0]
+  const status = textFields.dataset.isOpen
+  
   const edit = openEditText()
   const save = saveNewText()
+
+  const text = edit.previousElementSibling.querySelector('.post-text').value
+  const title = edit.previousElementSibling.querySelector('.post-title').value
+
+  const rmBtn = edit.querySelector('.remove-post-btn')
 
   if(status === 'false') {
     openEditText()
     changeBtnsText(edit, 'Сохранить', 'Отмена')
+    rmBtn.onclick = function() { 
+      cancleChanges(edit, title, text) 
+    }
   } else {
     saveNewText()
     changeBtnsText(save, 'Редактировать', 'Удалить')
+    rmBtn.onclick = removePost
   }
-
 }
